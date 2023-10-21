@@ -12,7 +12,6 @@ export class PCategoria {
 
   private inputId: HTMLInputElement;
   private inputNombre: HTMLInputElement;
-  private inputDescripcion: HTMLInputElement;
 
   public outputTable: HTMLTableElement;
   private outputError: HTMLParagraphElement;
@@ -30,7 +29,6 @@ export class PCategoria {
 
     this.inputId = this.component.querySelector('#id') as HTMLInputElement;
     this.inputNombre = this.component.querySelector('#nombre') as HTMLInputElement;
-    this.inputDescripcion = this.component.querySelector('#descripcion') as HTMLInputElement;
 
     this.outputTable = this.component.querySelector('#table') as HTMLTableElement;
     this.outputError = this.component.querySelector('#errors') as HTMLParagraphElement;
@@ -48,20 +46,17 @@ export class PCategoria {
     return {
       id: Number(this.inputId.value),
       nombre: this.inputNombre.value,
-      descripcion: this.inputDescripcion.value
     }
   }
 
   setData(data: Categoria): void {
     this.inputId.value = String(data.id);
     this.inputNombre.value = data.nombre;
-    this.inputDescripcion.value = data.descripcion;
   }
 
   clearData(): void {
     this.inputId.value = '0';
     this.inputNombre.value = '';
-    this.inputDescripcion.value = '';
     this.outputError.textContent = '';
   }
 
@@ -75,10 +70,9 @@ export class PCategoria {
     rows.forEach(row => {
       cells += `<tr>
       <td>${row.nombre}</td>
-      <td>${row.descripcion}</td>
       <td width="50px">
-        <button data-id="${row.id}" data-type="view">🔎</button>
-        <button data-id="${row.id}" data-type="delete">❌</button>
+        <button data-id="${row.id}" data-type="view">✏️</button>
+        <button data-id="${row.id}" data-type="delete">🗑️</button>
       </td>
       </tr>`
     });

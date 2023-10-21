@@ -7,6 +7,7 @@ export class DVenta {
   private id: number;
   private fecha: string;
   private montoTotal: number;
+  private nit:number|undefined;
 
   private detallesVenta: DDetalleVenta[];
 
@@ -16,6 +17,7 @@ export class DVenta {
     this.id = 0;
     this.fecha = '';
     this.montoTotal = 0;
+    this.nit=0;
     this.detallesVenta = [];
 
     this.database = new DatabaseJson('venta');
@@ -24,6 +26,7 @@ export class DVenta {
   setData(data: Venta): void {
     this.id = data.id;
     this.fecha = data.fecha;
+    this.nit = data.nit;
     this.montoTotal = data.montoTotal;
   }
 
@@ -41,6 +44,7 @@ export class DVenta {
     const data: Venta = {
       id: this.id,
       fecha: this.fecha,
+      nit:this.nit,
       montoTotal: this.montoTotal
     };
 

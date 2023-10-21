@@ -4,14 +4,12 @@ import { DatabaseJson } from "../../utils/database_json";
 export class DCategoria {
   private id: number;
   private nombre: string;
-  private descripcion: string;
 
   private database: DatabaseJson<Categoria>;
 
   constructor() {
     this.id = 0;
     this.nombre = '';
-    this.descripcion = '';
 
     this.database = new DatabaseJson('categoria');
   }
@@ -19,14 +17,12 @@ export class DCategoria {
   setData(data: Categoria): void {
     this.id = data.id;
     this.nombre = data.nombre;
-    this.descripcion = data.descripcion;
   }
 
   save(): Categoria | undefined {
     const data: Categoria = {
       id: this.id,
       nombre: this.nombre,
-      descripcion: this.descripcion
     };
 
     return this.id == 0 ?

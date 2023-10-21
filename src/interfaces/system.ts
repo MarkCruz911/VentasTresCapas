@@ -1,7 +1,6 @@
 export interface Categoria {
   id: number;
   nombre:string;
-  descripcion:string;
 }
 
 export interface Producto {
@@ -15,6 +14,7 @@ export interface Venta {
   id:number;
   fecha: string;
   montoTotal:number;
+  nit?:number;
   detallesVenta?: DetalleVenta[];
 }
 
@@ -26,3 +26,26 @@ export interface DetalleVenta {
   precio: number;
   subTotal: number;
 }
+
+export interface Cliente{
+  id: number;
+  nombre: string;
+  direccion: string;
+  gmail:string;
+  telefono: string;
+}
+
+export interface Vendedor{
+  id: number;
+  nombre: string;
+  direccion: string;
+  gmail:string;
+  telefono: string;
+  nivel:string;
+  porcentaje:number;
+  reclutador_id?:number;
+}
+
+
+
+

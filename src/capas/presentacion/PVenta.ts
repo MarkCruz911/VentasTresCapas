@@ -12,6 +12,7 @@ export class PVenta {
   private inputId: HTMLInputElement;
   private inputFecha: HTMLInputElement;
   private inputMontoTotal: HTMLInputElement;
+  private inputNit: HTMLInputElement;
 
   public inputDetallesVenta: HTMLDivElement;
   public outputTable: HTMLTableElement;
@@ -35,6 +36,7 @@ export class PVenta {
     this.inputId = this.component.querySelector('#id') as HTMLInputElement;
     this.inputFecha = this.component.querySelector('#fecha') as HTMLInputElement;
     this.inputMontoTotal = this.component.querySelector('#montoTotal') as HTMLInputElement;
+    this.inputNit=this.component.querySelector('#nit') as HTMLInputElement;
 
     this.inputDetallesVenta = this.component.querySelector('#detallesVenta') as HTMLDivElement;
     this.outputTable = this.component.querySelector('#table') as HTMLTableElement;
@@ -47,6 +49,7 @@ export class PVenta {
     return {
       id: Number(this.inputId.value),
       fecha: this.inputFecha.value,
+      nit:Number(this.inputNit.value),
       montoTotal: Number(this.inputMontoTotal.value)
     };
   }
@@ -84,6 +87,7 @@ export class PVenta {
     this.inputId.value = String(data.id);
     this.inputFecha.value = data.fecha;
     this.inputMontoTotal.value = String(data.montoTotal);
+    this.inputNit.value = String(data.nit);
   }
 
   _setDataDetallesVenta(detallesVenta: DetalleVenta[]): void {
@@ -119,6 +123,7 @@ export class PVenta {
     this.inputId.value = '0';
     this.inputFecha.value = '';
     this.inputMontoTotal.value = '';
+    this.inputNit.value='';
     this.inputDetallesVenta.innerHTML = '';
   }
 
@@ -133,9 +138,10 @@ export class PVenta {
       cells += `<tr>
       <td>${row.fecha}</td>
       <td>${row.montoTotal}</td>
+      <td>${row.nit}</td>
       <td width="50px">
-        <button data-id="${row.id}" data-type="view">🔎</button>
-        <button data-id="${row.id}" data-type="delete">❌</button>
+        <button data-id="${row.id}" data-type="view">✏️</button>
+        <button data-id="${row.id}" data-type="delete">🗑️</button>
       </td>
       </tr>`
     });

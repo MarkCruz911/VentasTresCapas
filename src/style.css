@@ -75,7 +75,7 @@ form {
 }
 
 button[data-type] {
-  background: none;
+  background: red;
   border: none;
   padding: 1px;
   margin: 1px;

@@ -4,8 +4,8 @@
   "version": "0.1.3",
   "type": "module",
   "author": {
-    "name": "Juan Vladimir",
-    "email": "juanvladimir13@gmail.com"
+    "name": "Marco Cruz",
+    "email": "markcruz9111@gmail.com"
   },
   "scripts": {
     "dev": "vite",

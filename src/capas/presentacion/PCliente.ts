@@ -1,11 +1,9 @@
-import { Categoria, Producto } from '../../interfaces/system';
-import { NCategoria } from '../negocio/NCategoria';
-import { NProducto } from '../negocio/NProducto';
+import { Cliente } from '../../interfaces/system';
+import { NCliente } from '../negocio/NCliente';
 
-export class PProducto {
+export class PCliente {
   private id:number;
-  private negocio: NProducto;
-  private negocioCategoria: NCategoria;
+  private negocio: NCliente;
 
   private component: HTMLElement;
 
@@ -14,35 +12,35 @@ export class PProducto {
 
   private inputId: HTMLInputElement;
   private inputNombre: HTMLInputElement;
-  private inputPrecio: HTMLInputElement;
-  private inputCategoria: HTMLSelectElement;
+  private inputDireccion: HTMLInputElement;
+  private inputGmail: HTMLInputElement;
+  private inputTelefono: HTMLInputElement;
 
   public outputTable: HTMLTableElement;
   private outputError: HTMLParagraphElement;
 
   constructor() {
-    this.id = 0;
-    this.negocio = new NProducto();
-    this.negocioCategoria = new NCategoria();
-
-    const $template = document.querySelector<HTMLTemplateElement>('#producto');
+    
+    const $template = document.querySelector<HTMLTemplateElement>('#cliente');
     const $templateContent = $template?.content.querySelector<HTMLElement>('#container');
     this.component = $templateContent?.cloneNode(true) as HTMLElement;
 
-    this.component.querySelector('h3')!.textContent = 'Capas Producto';
+    this.component.querySelector('h3')!.textContent = 'Capas Cliente';
 
     this.btnCreate = this.component.querySelector('#btnCreate') as HTMLButtonElement;
     this.btnSave = this.component.querySelector('#btnSave') as HTMLButtonElement;
 
     this.inputId = this.component.querySelector('#id') as HTMLInputElement;
     this.inputNombre = this.component.querySelector('#nombre') as HTMLInputElement;
-    this.inputPrecio = this.component.querySelector('#precio') as HTMLInputElement;
-
-    this.inputCategoria = this.component.querySelector('#categoria_id') as HTMLSelectElement;
+    this.inputDireccion = this.component.querySelector('#direccion') as HTMLInputElement;
+    this.inputGmail = this.component.querySelector('#gmail') as HTMLInputElement;
+    this.inputTelefono = this.component.querySelector('#telefono') as HTMLInputElement;
 
     this.outputTable = this.component.querySelector('#table') as HTMLTableElement;
     this.outputError = this.component.querySelector('#errors') as HTMLParagraphElement;
 
+    this.id = 0;
+    this.negocio = new NCliente();
     this._initListener();
   }
   
@@ -50,52 +48,46 @@ export class PProducto {
     this.id = id;
   }
 
-  getData(): Producto {
+  getData(): Cliente {
     return {
       id: Number(this.inputId.value),
       nombre: this.inputNombre.value,
-      precio: Number(this.inputPrecio.value),
-      categoria_id: Number(this.inputCategoria.value)
+      direccion: this.inputDireccion.value,
+      gmail:this.inputGmail.value,
+      telefono:this.inputTelefono.value,
     }
   }
 
-  setData(data: Producto): void {
+  setData(data: Cliente): void {
     this.inputId.value = String(data.id);
     this.inputNombre.value = data.nombre;
-    this.inputPrecio.value = String(data.precio);
-    this.inputCategoria.value = String(data.categoria_id);
+    this.inputDireccion.value = data.direccion;
+    this.inputGmail.value = data.gmail;
+    this.inputTelefono.value = data.telefono;
   }
 
   clearData(): void {
     this.inputId.value = '0';
     this.inputNombre.value = '';
-    this.inputPrecio.value = '';
+    this.inputDireccion.value='';
+    this.inputGmail.value='';
+    this.inputTelefono.value='';
+    this.outputError.textContent = '';
   }
 
   setDataError(message: string): void {
     this.outputError.textContent = message;
   }
 
-  setCategoriasList(rows: Categoria[]): void {
-    this.inputCategoria.innerHTML = '';
-    rows.forEach(
-      item => {
-        const option = document.createElement('option');
-        option.value = String(item.id);
-        option.textContent = item.nombre;
-
-        this.inputCategoria.append(option);
-      }
-    )
-  }
-
-  setTable(rows: Producto[]): void {
+  setTable(rows: Cliente[]): void {
     let cells = ''
 
     rows.forEach(row => {
       cells += `<tr>
       <td>${row.nombre}</td>
-      <td>${row.precio}</td>
+      <td>${row.direccion}</td>
+      <td>${row.gmail}</td>
+      <td>${row.telefono}</td>
       <td width="50px">
         <button data-id="${row.id}" data-type="view">✏️</button>
         <button data-id="${row.id}" data-type="delete">🗑️</button>
@@ -107,16 +99,19 @@ export class PProducto {
     tbody.innerHTML = cells;
   }
 
+  getHTML(): HTMLElement {
+    return this.component;
+  }
+
+  list(): void {
+    const table = this.negocio.list();
+    this.setTable(table);
+  }
+
   create(): HTMLElement {
     this.list();
     this.clearData();
-    this.setCategorias();
     return this.getHTML();
-  }
-
-  setCategorias(): void {
-    const categorias = this.negocioCategoria.list();
-    this.setCategoriasList(categorias);
   }
 
   save(): HTMLElement {
@@ -124,13 +119,8 @@ export class PProducto {
     this.negocio.setData(data);
     const model = this.negocio.save();
 
-    if (!model) {
-      this.setDataError('Error');
-      this.list();
-      return this.getHTML();
-    }
-
-    this.setData(model);
+    !model ? this.setDataError('Error') : this.setData(model);
+    
     this.list();
     return this.getHTML();
   }
@@ -154,15 +144,6 @@ export class PProducto {
     this.setData(data!);
   }
 
-  getHTML(): HTMLElement {
-    return this.component;
-  }
-
-  list(): void {
-    const table = this.negocio.list();
-    this.setTable(table);
-  }
-
   _initListener(): void {
     this.btnCreate.addEventListener('click', () => {
       this.create();
@@ -182,11 +163,13 @@ export class PProducto {
         this.setId(Number(id));
         this.delete();
       }
+        
 
       if (element.getAttribute('data-type') == 'view'){
         this.setId(Number(id));
         this.find();
       }
+        
     });
   }
 }
